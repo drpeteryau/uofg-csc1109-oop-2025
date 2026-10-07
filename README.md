@@ -1,169 +1,62 @@
-# Object Oriented Programming in Java
+# CSC1109 Object-Oriented Programming in Java
 
-Welcome to the CSC1109 Object Oriented Programming!
+Teaching code for **CSC1109 Object-Oriented Programming**, School of Computing Science, University of Glasgow (Singapore). It covers the four pillars of OOP (encapsulation, inheritance, polymorphism, abstraction) through laboratory exercises, worked examples, a team project starter and a past test.
 
-This repository contains sample source code we use in the laboratory and tutorial sessions, to help you understand and implement the core concepts of Object-Oriented Programming (OOP) using the Java programming language.
+## Repository map
 
-We recommend using Microsoft Visual Studio Code as your Integrated Development Environment (IDE) for the best experience.
+| Module | Contents | Read this first |
+|---|---|---|
+| [`labs/`](labs/README.md) | Lab 01-05 exercise code (Hello World, Strings/Date/Math, file I/O, encapsulation, packages) | [labs/README.md](labs/README.md) |
+| [`solutions/`](solutions/README.md) | Reference answers for Lab 03-05 | [solutions/README.md](solutions/README.md) |
+| [`examples/`](examples/README.md) | Abstract class vs interface, side by side | [examples/README.md](examples/README.md) |
+| [`advanced/`](advanced/README.md) | Composition vs inheritance, `Cloneable`, immutability, reflection | [advanced/README.md](advanced/README.md) |
+| [`projects/cli-sims/`](projects/cli-sims/README.md) | CLI Sims team project: starter code and a worked extension | [projects/cli-sims/README.md](projects/cli-sims/README.md) |
+| [`assessments/`](assessments/README.md) | Test 02 (AY23/24) starter and reference solution | [assessments/README.md](assessments/README.md) |
+| [`data/`](data) | Shared input files (`lab04_input.txt`) | |
 
-## Table of Contents
+`docs/MIGRATION.md` records where each file came from and what was corrected.
 
-- [Object Oriented Programming in Java](#object-oriented-programming-in-java)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Installation](#installation)
-  - [Concepts Covered](#concepts-covered)
-    - [1. Encapsulation](#1-encapsulation)
-    - [2. Inheritance](#2-inheritance)
-    - [3. Polymorphism](#3-polymorphism)
-    - [4. Abstraction](#4-abstraction)
-  - [Usage](#usage)
-  - [Contributing](#contributing)
-  - [Acknowledgments](#acknowledgments)
-  - [Contacts](#contacts)
+## Quick start
 
-## Introduction
+Requirements: **JDK 21** (for example [Eclipse Temurin](https://adoptium.net/)) and **Maven 3.9+**. [Visual Studio Code](https://code.visualstudio.com/) with the "Extension Pack for Java" is recommended.
 
-Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects" that group data and methods. This repository serves as a practical introduction to OOP in Java, featuring examples and explanations of the key principles: Encapsulation, Inheritance, Polymorphism, and Abstraction.
+```bash
+git clone https://github.com/drpeteryau/uofg-csc1109-oop-2025.git
+cd uofg-csc1109-oop-2025
 
-## Installation
+mvn test                       # compile everything and run all tests
+mvn -pl labs -am compile       # build a single module
 
-1. **Clone the Repository**
-   ```bash
-   git clone git@github.com:drpeteryau/uofg-csc1109-oop-2025.git
-   cd uofg-csc1109-oop-2025
-   ```
-
-2. **Open in Visual Studio Code**
-   - Open Visual Studio Code.
-   - Click on "File" > "Open Folder" and select the cloned repository folder.
-
-3. **Ensure Java Development Kit (JDK) is Installed**
-   - We recommend downloading the latest version of the JDK [here](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
-
-## Concepts Covered
-
-The following OOP concepts are illustrated in this repository with detailed examples:
-
-### 1. Encapsulation
-
-Encapsulation is the bundling of data and methods that operate on the data within a single unit, like a class. It restricts direct access to some of the object's components, which is a good practice for maintaining internal object integrity.
-
-**Example:**
-```java
-public class Car {
-    private String model;
-    private int year;
-
-    public Car(String model, int year) {
-        this.model = model;
-        this.year = year;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-}
+# run any class from the repository root (so data/ paths resolve)
+java -cp labs/target/classes com.example.lab04.LineWordCounter
+java -cp projects/cli-sims/target/classes com.example.sims.Main
 ```
 
-### 2. Inheritance
+Every runnable class has a `main` method. Classes that read files accept an optional path argument and default to `data/lab04_input.txt`.
 
-Inheritance is a mechanism where one class acquires the properties and behaviors of a parent class, promoting code reusability.
+## OOP concepts at a glance
 
-**Example:**
-```java
-public class ElectricCar extends Car {
-    private int batteryLife;
-
-    public ElectricCar(String model, int year, int batteryLife) {
-        super(model, year);
-        this.batteryLife = batteryLife;
-    }
-
-    public int getBatteryLife() {
-        return batteryLife;
-    }
-}
-```
-
-### 3. Polymorphism
-
-Polymorphism allows methods to do different things based on the object it is acting upon, even though they share the same name.
-
-**Example:**
-```java
-public class Car {
-    public void startEngine() {
-        System.out.println("Car engine started");
-    }
-}
-
-public class ElectricCar extends Car {
-    @Override
-    public void startEngine() {
-        System.out.println("Electric car started silently");
-    }
-}
-```
-
-### 4. Abstraction
-
-Abstraction is the concept of hiding the complex reality and exposing only the necessary parts.
-
-**Example:**
-```java
-abstract class Vehicle {
-    abstract void start();
-}
-
-public class Truck extends Vehicle {
-    @Override
-    void start() {
-        System.out.println("Truck starting logic...");
-    }
-}
-```
-
-## Usage
-
-- Navigate to each respective Java file to explore the implementation of OOP concepts.
-- Modify and run the examples to better understand how each OOP concept works in practice.
-- Experiment by creating your own classes and applying the concepts.
+| Concept | In one sentence | Where to see it |
+|---|---|---|
+| **Encapsulation** | Hide state behind `private` fields and expose controlled access | `labs` (`Person`), `advanced` (`BankTransaction`) |
+| **Inheritance** | A subclass reuses and specialises a superclass (IS-A) | `projects/cli-sims` (`WorkingSimCharacter`), `advanced` (`inheritance`) |
+| **Polymorphism** | One reference type, many runtime behaviours | `examples` (`Main`), `solutions` (`Shape`) |
+| **Abstraction** | Expose what, hide how: abstract classes and interfaces | `examples`, `solutions` (`Shape`) |
+| **Composition** | Build behaviour from collaborating objects (HAS-A) | `advanced` (`composition`) |
 
 ## Contributing
 
-Contributions are welcome! Please submit a pull request or create an issue for any bugs, feature requests, or improvements.
-
-For learning and teaching related academic discussion, please go to the the Learning Management System (LMS).
+Contributions are welcome: open a pull request or an issue for bugs and improvements. Run `mvn test` before submitting. For learning and teaching discussion, please use the Learning Management System (LMS).
 
 ## Acknowledgments
 
-We would like to extend our gratitude to the support from Microsoft MVP Program for providing Azure cloud resources that facilitate learning and teaching. Their support has been invaluable to this project.
-
-<img src="https://lh5.googleusercontent.com/mPMAI0PUGh0Arhx-lSnR829JuYqafCDOa0BZr-3yJ2Fx-EhZDG2Wb_KXw-fyOBrbcEZhtPsgdvTfmenSLPyOd-bfIKcKemGjLJAFo4Osf8N-3P8Wy9NB7nKUvWj_eug_CA=w1280" alt="drawing" style="width:200px;"/>
-
-For more information on the Microsoft MVP Program, visit [here](https://mvp.microsoft.com).
+We thank the Microsoft MVP Program for providing Azure cloud resources that support learning and teaching. For more information, visit [mvp.microsoft.com](https://mvp.microsoft.com).
 
 ## Contacts
 
-Instructor: Dr Peter Yau (PeterCY.Yau@glasgow.ac.uk)
+- Instructor: Dr Peter Yau (PeterCY.Yau@glasgow.ac.uk)
+- Professional Officer: Dr Ariscahyadi Risdianto (ariscahyadi.risdianto@singaporetech.edu.sg)
 
-Professional Officer: Dr Ariscahyadi Risdianto (ariscahyadi.risdianto@singaporetech.edu.sg)
+## Warnings
 
----
-
-Thank you for visiting our repository! We hope this resource proves valuable in your journey to mastering Object-Oriented Programming with Java.
-
-
+Scan any files you use or share for viruses and malware before opening or distributing them. It is your responsibility as a computing professional to keep the files you handle safe.
